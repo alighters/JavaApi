@@ -1,0 +1,5 @@
+<div>
+  <% @data.each do |java| %>
+    <%= code(java.to_java_str).html_safe %>
+  <% end %>
+</div>

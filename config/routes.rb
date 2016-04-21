@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   #
-  get 'read' => 'json#read'
+  get 'read' => 'json#read_local'
+  get 'show' => 'json#show'
 end
 

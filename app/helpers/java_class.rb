@@ -38,6 +38,14 @@ class JavaClass
     values 
   end
 
+  def to_java_str
+    str = ""
+    to_java.each do |code|
+      str = str + code.to_s + "\r\n"
+    end
+    str
+  end
+
   def to_java_method
     values = []
     @methods.each_with_index.map{ |method, i|
