@@ -56,5 +56,7 @@ Rails.application.routes.draw do
   #
   get 'read' => 'json#read_local'
   get 'show' => 'json#show'
+  get 'save' => 'json#save'
+  get 'test' => 'json#test'
 end
 
