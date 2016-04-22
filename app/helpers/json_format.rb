@@ -150,7 +150,7 @@ class JsonFormat
         lines.shift json_start_line
         lines[0] = '{'
       end
-      lines[ lines.size - 1] = '}'
+      lines[ lines.size - 2] = '}'
 
     end
     json = ""
@@ -159,6 +159,38 @@ class JsonFormat
     end
     self.write_json lines
     json
+  end
+
+  def self.parse_json_to_classes (json)
+    classes = []
+    ob = JSON.parse json
+
+    ob.each { |model_key, model_value|
+      model_value.each { |version_key, version_value|
+
+        values = version_value.values
+
+        if(!values[0].nil? && is_method_json?(values[0]))
+          java_class = JavaClass.new
+          java_class.name = model_key
+          java_class.version = version_key
+          java_class.set_methods (version_value)
+          classes.push java_class
+        else
+          # 处理admin/private这种情况，另一种module的代码
+          version_value.each { |api_key, api_value|
+            java_class = JavaClass.new
+            java_class.name = api_key
+            java_class.version = version_key
+            java_class.node = model_key
+            java_class.set_methods (api_value)
+            classes.push java_class
+          }
+        end
+      }
+    }
+    classes
+
   end
 
 
@@ -190,6 +222,17 @@ class JsonFormat
     }
     puts lines
 
+  end
+
+   # 检验json格式是否为Java方法的json
+  def self.is_method_json? (json)
+    result = false
+    unless json.nil? 
+      if (!json['url'].nil? && !json['name'].nil?)
+        result = true
+      end
+    end
+    result
   end
 
 end

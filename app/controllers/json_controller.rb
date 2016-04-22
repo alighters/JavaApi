@@ -13,7 +13,10 @@ class JsonController < ApplicationController
   end
 
   def show
-    @data = JsonGenerator.get_java_classes
+    JsonFormat.save_remote_file
+    json = JsonFormat.save_remote_file_to_json
+    @data = JsonFormat.parse_json_to_classes json
+
   end
 
   def write
