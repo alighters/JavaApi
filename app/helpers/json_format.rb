@@ -80,8 +80,42 @@ class JsonFormat
     end
     lines
   end
- 
-   def self.save_remote_file_to_json
+
+  # def self.save_remote_file_to_json
+  #   lines = []
+  #   pattern = /[a-zA-z]+[0-9]?:/
+  #   remote_file = Rails.root.to_s + "/output/" + Date.today.to_s + "-api.txt"
+  #   save_file = Rails.root.to_s + "/output/" + Date.today.to_s + "-json.txt"
+  #   file = File.new(save_file, 'w+')
+  #   if File.exists? remote_file
+  #     json_start = false
+  #     open(remote_file){ |f|
+  #       f.each_line { |line| 
+  #         if /function apiSetting/ =~ line
+  #           lines.delete_at(lines.size-1)
+  #           lines.delete_at(lines.size-1)
+  #           lines.push '}'
+  #           break
+  #         elsif /var apiParam/ =~ line
+  #           lines.push '{'
+  #           json_start = true
+  #         elsif json_start
+  #           new_line = line.gsub("\"", "").gsub(/'/, "\"")
+  #           new_line.scan(pattern).each do |key_word|
+  #             new_line = new_line.gsub(/#{key_word}/, "\"#{key_word.slice(0..-2)}\":")
+  #           end
+  #           puts new_line
+  #           file.write new_line
+  #           lines.push new_line
+  #         end
+
+  #       }
+  #     }
+  #   end
+  #   lines
+  # end
+
+  def self.save_remote_file_to_json
     lines = []
     pattern = /[a-zA-z]+[0-9]?:/
     remote_file = Rails.root.to_s + "/output/" + Date.today.to_s + "-api.txt"
@@ -89,30 +123,42 @@ class JsonFormat
     file = File.new(save_file, 'w+')
     if File.exists? remote_file
       json_start = false
-      open(remote_file){ |f|
-        f.each_line { |line| 
-          if /function apiSetting/ =~ line
-            lines.delete_at(lines.size-1)
-            lines.delete_at(lines.size-1)
-            lines.push '}'
-            break
-          elsif /var apiParam/ =~ line
-            lines.push '{'
-            json_start = true
-          elsif json_start
-            new_line = line.gsub("\"", "").gsub(/'/, "\"")
-            new_line.scan(pattern).each do |key_word|
-              new_line = new_line.gsub(/#{key_word}/, "\"#{key_word.slice(0..-2)}\":")
-            end
-            puts new_line
-            file.write new_line
-            lines.push new_line
-          end
+      json_start_line = 0
+      json_end_line = 0
+      File.foreach(remote_file).with_index do |line, line_num|
+        if /function apiSetting/ =~ line
+          json_end_line = line_num
+        elsif /var apiParam/ =~ line
+          json_start_line = line_num
+        end
+        new_line = line.gsub("\"", "").gsub(/'/, "\"")
+        new_line.scan(pattern).each do |key_word|
+          new_line = new_line.gsub(/#{key_word}/, "\"#{key_word.slice(0..-2)}\":")
+        end
+        lines.push new_line
+      end
 
-        }
-      }
+      # 修整数据
+      puts lines.size
+      puts json_end_line
+      last_size = lines.size - json_end_line
+      while last_size > 0
+        lines.pop
+        last_size = last_size - 1
+      end
+      if json_start_line > 0
+        lines.shift json_start_line
+        lines[0] = '{'
+      end
+      lines[ lines.size - 1] = '}'
+
     end
-    lines
+    json = ""
+    lines.each do |line|
+      json = json + line
+    end
+    self.write_json lines
+    json
   end
 
 

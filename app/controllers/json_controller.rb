@@ -38,7 +38,7 @@ class JsonController < ApplicationController
     #data = JsonFormat.read_remote_file
     #JsonFormat.write_json data
     data = JsonFormat.save_remote_file_to_json
-    render :json => {'data' => 'ok'}
+    render :json => {'data' => data}
   end
 
 

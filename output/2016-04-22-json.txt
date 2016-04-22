@@ -1,4 +1,4 @@
-        "post": {
+{        "post": {
             "v1": {
                 "get_all_posts": {
                     "name": "获取全公司的动态更新 ",
