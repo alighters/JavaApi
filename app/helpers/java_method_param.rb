@@ -29,5 +29,18 @@ class JavaMethodParam
     Util.to_camel(@key)
   end
   
+  def == (param)
+    result = true
+    unless @key.eql? param.key
+      result = false
+    end
+    unless @type.eql? param.type
+      result = false
+    end
+    unless @isMust == param.isMust
+      result = false
+    end
+    result
+  end
 
 end

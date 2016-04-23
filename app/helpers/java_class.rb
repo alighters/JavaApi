@@ -1,11 +1,21 @@
 class JavaClass
+ 
   attr_accessor :package, :name, :node, :version
   attr_accessor :methods
 
   require 'fileutils'
 
+
+  attr_accessor :methods_deleted
+  attr_accessor :methods_updated
+  attr_accessor :methods_added
+
+
   def initialize()
     self.methods = []
+    self.methods_updated = []
+    self.methods_deleted = []
+    self.methods_added = []
     self.package = "com.mingdao.data.net"
   end
 
@@ -141,8 +151,47 @@ class JavaClass
     package
   end
 
+  def == (another)
+    unless @name == another.name
+      return false
+    end
+    unless @node == another.node
+      return false
+    end
+    unless @package == another.package
+      return false
+    end
+    unless @version == another.version
+      return false
+    end
+    return true
+  end
 
+  def is_methods_diff(another_methods)
+    result = false
+    @methods.each do |method|
+      index = another_methods.find_index method
+      if !index.nil?
+        if !method.is_not_changed? another_methods[index]
+          @methods_updated.push another_methods[index]
+          @methods_updated.push method
+          result = true
+        end
+      else
+        @methods_added.push method
+        result = true
+      end
+    end
 
+    another_methods.each do |method|
+      unless @methods.include? method
+        @methods_deleted.push method
+        result = true
+      end
+    end
+
+    result
+  end
 
 
 end

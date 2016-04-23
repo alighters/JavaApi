@@ -22,7 +22,6 @@ class JsonFormat
           new_line = new_line.gsub(/#{key_word}/, "\"#{key_word.slice(0..-2)}\":")
         end
       end
-      puts new_line
     end
 
   end
@@ -94,8 +93,6 @@ class JsonFormat
       end
 
       # 修整数据
-      puts lines.size
-      puts json_end_line
       last_size = lines.size - json_end_line
       while last_size > 0
         lines.pop
@@ -114,6 +111,12 @@ class JsonFormat
     end
     self.write_json(lines,date)
     json
+  end
+
+  def self.parse_json_from_file(date)
+    json_file = Rails.root.to_s + "/output/" + date + "/json.txt"
+    json = File.read(json_file)
+    parse_json_to_classes json
   end
 
   def self.parse_json_to_classes (json)
@@ -158,8 +161,6 @@ class JsonFormat
     lines.each_with_index.map{ |line, index|
       file.write line
     }
-    puts lines
-
   end
 
    # 检验json格式是否为Java方法的json

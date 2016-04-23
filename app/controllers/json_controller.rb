@@ -46,4 +46,17 @@ class JsonController < ApplicationController
     render :json => {'data' => data}
   end
 
+  def diff
+    @date_before = params[:before]
+    @date_now = params[:now]
+    unless @date_now.nil?
+      @date_now = Date.today.to_s
+    end
+    @date_before = '2016-04-21'
+    @date_now = '2016-04-22'
+    @before_classes = JsonFormat.parse_json_from_file @date_before
+    @now_classes = JsonFormat.parse_json_from_file @date_now
+    
+  end
+
 end

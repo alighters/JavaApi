@@ -1,0 +1,37 @@
+<div>
+  <% @now_classes.each do |now_class| %>
+    <% class_index = @before_classes.find_index now_class %>
+    <% if !class_index.nil? %>
+      <% before_class = @before_classes[class_index] %>
+      <% if now_class.is_methods_diff before_class.methods %>
+        <h1> 类名：<%=now_class.get_name%></h1>
+        <% if now_class.methods_updated.size > 0 %>
+          <p> 更新的</p>
+          <% now_class.methods_updated.each_with_index.map {|method, index|%>
+            <% if index%2 == 0 %>
+              <p><%= @date_before.to_s%>
+            <% else%>
+              <p><%= @date_now.to_s%>
+            <%end %>
+
+            <%= code(method.to_java_str).html_safe %>
+          <% }%>
+        <% end %>
+        <% if now_class.methods_added.size > 0 %>
+          <p> 新增的</p>
+          <% now_class.methods_added.each do |method|%>
+            <%= code(method.to_java_str).html_safe %>
+          <% end%>
+        <% end%>
+        <% if now_class.methods_deleted.size > 0 %>
+          <p> 删除的</p>
+          <% now_class.methods_deleted.each do |method|%>
+            <%= code(method.to_java_str).html_safe %>
+          <% end%>
+        <% end%>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+

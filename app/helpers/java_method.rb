@@ -24,17 +24,17 @@ class JavaMethod
     end
   end
 
-  def to_method
-
-  end
-  
   def to_java
     values = []
     values.push  "/**"
     values.push  " * #{@name}"
     values.push  " *"
     @params.each do |method_param|
-      values.push " * @param #{method_param.get_key}   #{method_param.des}"
+      str = ""
+      if method_param.isMust
+        str = "必填字段"
+      end
+      values.push " * @param #{method_param.get_key}    #{str}  #{method_param.des}"
     end
     values.push " **/"
 
@@ -48,8 +48,17 @@ class JavaMethod
         values.push "    #{method_param.to_java});"
       end
     }
-    return values
+    values
   end
+
+  def to_java_str
+    str = ""
+    to_java.each do |code|
+      str = str + code.to_s + "\r\n"
+    end
+    str
+  end
+
 
   def get_method_name
     method_name = nil
@@ -67,6 +76,31 @@ class JavaMethod
       url = "/#{@url_prefix}#{@url}"
     end
     url 
+  end
+
+  def == (method)
+    result = true
+    unless @url == method.url
+      result = false
+    end
+    result 
+  end
+
+  def is_not_changed? method
+    result = true
+    unless @name.eql? method.name
+      result = false
+    end
+    unless @requestMode.eql? method.requestMode
+      result = false
+    end
+    unless @url_prefix.eql? method.url_prefix
+      result = false
+    end
+    unless @params == method.params
+      result = false
+    end
+    result
   end
 
 end
