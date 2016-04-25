@@ -109,14 +109,19 @@ class JsonFormat
     lines.each do |line|
       json = json + line
     end
-    self.write_json(lines,date)
+    self.write_json(json,date)
     json
   end
 
   def self.parse_json_from_file(date)
+    result = []
     json_file = Rails.root.to_s + "/output/" + date + "/json.txt"
-    json = File.read(json_file)
-    parse_json_to_classes json
+    puts json_file
+    if File.exists? json_file
+      json = File.read(json_file)
+      result = parse_json_to_classes json
+    end
+    result
   end
 
   def self.parse_json_to_classes (json)
@@ -151,16 +156,14 @@ class JsonFormat
 
   end
 
-  def self.write_json(lines, date)
+  def self.write_json(json, date)
     cur_dir = Rails.root.to_s + "/output/" + date
     unless Dir.exist? cur_dir
       FileUtils.mkdir_p cur_dir
     end
     file_name = cur_dir + "/json.txt"
     file = File.new(file_name, "w+") 
-    lines.each_with_index.map{ |line, index|
-      file.write line
-    }
+    file.write json
   end
 
    # 检验json格式是否为Java方法的json

@@ -13,19 +13,21 @@ class JsonController < ApplicationController
   # 根据日期显示相应版本所有的java接口数据
   def show
     date = params[:date]
-    unless date.nil?
+    if date.nil?
       date = Date.today.to_s
     end
-    json = JsonFormat.save_remote_file_to_json (date)
-    @data = JsonFormat.parse_json_to_classes json
+    @data = JsonFormat.parse_json_from_file (date)
   end
 
   def write
-    data = JsonGenerator.get_java_classes
-    data.each do |java_file|
-      java_file.write_to_file
+    JsonFormat.save_remote_file
+    json = JsonFormat.save_remote_file_to_json Date.today.to_s
+    data = JsonFormat.parse_json_to_classes json
+    data.each do |java_class|
+      java_class.write_to_file
     end
-    render :json => {'data' => data}
+
+    render :json => {'data' => 'ok'}
   end
 
   def save
@@ -36,6 +38,7 @@ class JsonController < ApplicationController
    # 读取远程最新的js文件
   def read_remote
     JsonFormat.save_remote_file
+    JsonFormat.save_remote_file_to_json Date.today.to_s
     render :json => {'result' => 'ok'}
   end
 
@@ -49,11 +52,9 @@ class JsonController < ApplicationController
   def diff
     @date_before = params[:before]
     @date_now = params[:now]
-    unless @date_now.nil?
+    if @date_now.nil?
       @date_now = Date.today.to_s
     end
-    @date_before = '2016-04-21'
-    @date_now = '2016-04-22'
     @before_classes = JsonFormat.parse_json_from_file @date_before
     @now_classes = JsonFormat.parse_json_from_file @date_now
     

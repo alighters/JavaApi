@@ -57,6 +57,7 @@ Rails.application.routes.draw do
 
   get 'index' => 'json#index'
   get 'remote' => 'json#read_remote'
+  get 'write' => 'json#write'
   get 'show' => 'json#show'
   get 'diff' => 'json#diff'
   get 'save' => 'json#save'

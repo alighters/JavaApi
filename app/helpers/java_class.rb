@@ -118,19 +118,22 @@ class JavaClass
       file.close
     else
       lines = []
-      File.open(file_name).each do |line|
+      file = File.open(file_name)
+      file.each do |line|
         lines.push line
       end
+      file.close
       File.delete(file_name)
       file = File.new(file_name, "w+")
       lines.each_with_index.map{ |line, index|
-        if index == lines.size - 1 
+        if index == lines.size - 2 
           to_java_method.each do |method_line|
             file.write method_line + "\n"
           end
         end
         file.write line + "\n"
       }
+      file.close
     end
 
   end

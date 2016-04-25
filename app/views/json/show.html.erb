@@ -1,5 +1,9 @@
 <div>
-  <% @data.each do |java| %>
-    <%= code(java.to_java_str).html_safe %>
+  <% if @data.size > 0 %>
+    <% @data.each do |java| %>
+      <%= code(java.to_java_str).html_safe %>
+    <% end %>
+  <% else %>
+    无数据
   <% end %>
 </div>
