@@ -4,7 +4,7 @@
   <%= link_to "获取最新js文件,并保存为java文件", controller: "json", action: "write" %>
   <p> 历史版本 </p>
   <% @files.each do |file| %>
-    <%= link_to file, controller: "json", action: "show", date: file%><br/> 
+    <%= link_to file, controller: "json", action: "show", date: file%>   <%= link_to "删除", controller: "json", action: "delete", date: file%>  <br/> 
   <% end %>
   <p> 版本比较</p>
   <form action="/diff" method="get">

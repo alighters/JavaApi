@@ -34,6 +34,19 @@ class JsonController < ApplicationController
     JsonFormat.save_remote_file
     render :json => {'result' => 'ok'}
   end
+
+  def delete
+    date = params[:date]
+
+    if date.nil?
+      render :json => {'error' => 'Date is not allowed empty'}
+    else
+      dir_name = Rails.root.to_s + "/output/" + date.to_s
+      FileUtils.rm_r Dir.glob("#{dir_name}")
+      render :json => {'result' => 'ok'}
+    end
+
+  end
   
    # 读取远程最新的js文件
   def read_remote
