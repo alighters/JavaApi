@@ -1,5 +1,5 @@
 class JavaClass
- 
+
   attr_accessor :package, :name, :node, :version
   attr_accessor :methods
 
@@ -103,7 +103,11 @@ class JavaClass
       dir_name = dir_name + "/#{@node.to_s}"
     end
     unless @name.nil?
-      dir_name = dir_name + "/#{@name.to_s}"
+      name = @name.to_s
+      if name.eql? 'application'
+        name = 'app'
+      end
+      dir_name = dir_name + "/#{name.downcase}"
     end
     unless Dir.exist? dir_name
       FileUtils.mkdir_p dir_name
@@ -125,14 +129,17 @@ class JavaClass
       file.close
       File.delete(file_name)
       file = File.new(file_name, "w+")
+      while lines.last.gsub(/\n/,'').gsub(' ', '').eql? '}' 
+        lines.pop
+      end
       lines.each_with_index.map{ |line, index|
-        if index == lines.size - 2 
-          to_java_method.each do |method_line|
-            file.write method_line + "\n"
-          end
-        end
-        file.write line + "\n"
+        file.write line 
       }
+      to_java_method.each do |method_line|
+        file.write method_line + "\n"
+      end
+      file.write "}"
+
       file.close
     end
 
@@ -145,11 +152,20 @@ class JavaClass
 
   def get_package
     package = @package.to_s
+
     unless @node.nil?
-      package = package + ".#{@node.to_s}"
+      node = @node.to_s
+      if node.eql? "application"
+        node = "app"
+      end
+      package = package + ".#{node.downcase}"
     end
     unless @name.nil?
-      package = package + ".#{@name.to_s}"
+      name = @name.to_s
+      if name.eql? "application"
+        name = "app"
+      end
+      package = package + ".#{name.downcase}"
     end
     package
   end

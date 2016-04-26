@@ -1,4 +1,4 @@
-package com.mingdao.data.net.WebChat;
+package com.mingdao.data.net.webchat;
 
 import retrofit2.http.GET;
 import retrofit2.http.POST;
