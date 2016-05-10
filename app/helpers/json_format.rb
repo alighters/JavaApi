@@ -17,7 +17,7 @@ class JsonFormat
     File.foreach("api.txt").with_index do |line, line_num|
       new_line = line
       if(line.include?(":"))
-        new_line = new_line.gsub("\"", "").gsub(/'/, "\"")
+        new_line = new_line.gsub(/'/, "\"")
         line.scan(pattern).each do |key_word|
           new_line = new_line.gsub(/#{key_word}/, "\"#{key_word.slice(0..-2)}\":")
         end
@@ -58,7 +58,7 @@ class JsonFormat
             lines.push '{'
             json_start = true
           elsif json_start
-            new_line = line.gsub("\"", "").gsub(/'/, "\"")
+            new_line = line.gsub(/'/, "\"")
             new_line.scan(pattern).each do |key_word|
               new_line = new_line.gsub(/#{key_word}/, "\"#{key_word.slice(0..-2)}\":")
             end
@@ -85,7 +85,7 @@ class JsonFormat
         elsif /var apiParam/ =~ line
           json_start_line = line_num
         end
-        new_line = line.gsub("\"", "").gsub(/'/, "\"")
+        new_line = line.gsub(/'/, "\"")
         new_line.scan(pattern).each do |key_word|
           new_line = new_line.gsub(/#{key_word}/, "\"#{key_word.slice(0..-2)}\":")
         end

@@ -73,7 +73,7 @@ class JavaMethod
   def get_url
     url = @url
     unless @url_prefix.nil?
-      url = "/#{@url_prefix}#{@url}"
+      url = "#{@url_prefix}#{@url}"
     end
     url 
   end

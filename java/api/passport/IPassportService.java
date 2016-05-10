@@ -11,7 +11,7 @@ public interface IPassportService {
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
      **/
-    @GET("/v1/passport/get_passport_detail")
+    @GET("v1/passport/get_passport_detail")
     Observable<Void> getPassportDetail(
         @Query("access_token") String accessToken);
 
@@ -20,7 +20,7 @@ public interface IPassportService {
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
      **/
-    @GET("/v1/passport/get_passport_setting")
+    @GET("v1/passport/get_passport_setting")
     Observable<Void> getPassportSetting(
         @Query("access_token") String accessToken);
 
@@ -29,7 +29,7 @@ public interface IPassportService {
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
      **/
-    @GET("/v1/passport/get_un_read_count")
+    @GET("v1/passport/get_un_read_count")
     Observable<Void> getUnReadCount(
         @Query("access_token") String accessToken);
 
@@ -38,7 +38,7 @@ public interface IPassportService {
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
      **/
-    @GET("/v1/passport/get_common_category")
+    @GET("v1/passport/get_common_category")
     Observable<Void> getCommonCategory(
         @Query("access_token") String accessToken);
 }

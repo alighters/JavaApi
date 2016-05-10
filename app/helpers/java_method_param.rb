@@ -26,7 +26,13 @@ class JavaMethodParam
   end
 
   def get_key
-    Util.to_camel(@key)
+    key = Util.to_camel(@key)
+    if 'pageindex' == key
+      key = 'pageIndex'
+    elsif 'pagesize' == key
+      key = 'pageSize'
+    end
+    key
   end
   
   def == (param)

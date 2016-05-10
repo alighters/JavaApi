@@ -18,7 +18,7 @@ public interface ICalendarService {
      * @param isPrivateCalendar      是否查看私密日程
      * @param categorys      用户日程分类，多个以逗号相隔
      **/
-    @GET("/v1/calendar/get_calendar_to_do")
+    @GET("v1/calendar/get_calendar_to_do")
     Observable<Void> getCalendarToDo(
         @Query("access_token") String accessToken,
         @Query("rsscal") Boolean rsscal,
@@ -42,7 +42,7 @@ public interface ICalendarService {
      * @param isPrivateCalendar      是否查看私密日程
      * @param categorys      用户日程分类，多个以逗号相隔
      **/
-    @GET("/v1/calendar/get_calendar_day_week_month")
+    @GET("v1/calendar/get_calendar_day_week_month")
     Observable<Void> getCalendarDayWeekMonth(
         @Query("access_token") String accessToken,
         @Query("date") String date,
@@ -60,7 +60,7 @@ public interface ICalendarService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param calendarId    必填字段  日程编号
      **/
-    @GET("/v1/calendar/get_calendar_detail")
+    @GET("v1/calendar/get_calendar_detail")
     Observable<Void> getCalendarDetail(
         @Query("access_token") String accessToken,
         @Query("calendar_id") String calendarId);
@@ -69,21 +69,21 @@ public interface ICalendarService {
      * 获取登录用户未确认日程列表
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
-     * @param pageindex      指定要返回的页数
-     * @param pagesize      指定要返回的记录条数
+     * @param pageIndex      指定要返回的页数
+     * @param pageSize      指定要返回的记录条数
      **/
-    @GET("/v1/calendar/get_invite_calendars")
+    @GET("v1/calendar/get_invite_calendars")
     Observable<Void> getInviteCalendars(
         @Query("access_token") String accessToken,
-        @Query("pageindex") String pageindex,
-        @Query("pagesize") String pagesize);
+        @Query("pageindex") String pageIndex,
+        @Query("pagesize") String pageSize);
 
     /**
      * 获取用户所有分类
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
      **/
-    @GET("/v1/calendar/get_user_all_cal_categories")
+    @GET("v1/calendar/get_user_all_cal_categories")
     Observable<Void> getUserAllCalCategories(
         @Query("access_token") String accessToken);
 
@@ -94,7 +94,7 @@ public interface ICalendarService {
      * @param calendarStartTime      日程开始时间
      * @param calendarEndTime      日程结束时间
      **/
-    @GET("/v1/calendar/get_user_busy_calendar")
+    @GET("v1/calendar/get_user_busy_calendar")
     Observable<Void> getUserBusyCalendar(
         @Query("access_token") String accessToken,
         @Query("calendar_start_time") String calendarStartTime,
@@ -124,7 +124,7 @@ public interface ICalendarService {
      * @param calendarRemindTime      提醒时间
      * @param calendarCategoryId      日程分类id
      **/
-    @POST("/v1/calendar/create_calendar")
+    @POST("v1/calendar/create_calendar")
     Observable<Void> createCalendar(
         @Query("access_token") String accessToken,
         @Query("calendar_name") String calendarName,
@@ -172,7 +172,7 @@ public interface ICalendarService {
      * @param calendarRemindTime      提醒时间
      * @param calendarCategoryId      日程分类id
      **/
-    @POST("/v1/calendar/edit_calendar")
+    @POST("v1/calendar/edit_calendar")
     Observable<Void> editCalendar(
         @Query("access_token") String accessToken,
         @Query("calendar_id") String calendarId,
@@ -203,7 +203,7 @@ public interface ICalendarService {
      * @param calendarId    必填字段  日程id
      * @param chooseType    必填字段  join=1/ deny=2
      **/
-    @POST("/v1/calendar/join_or_deny_calendar")
+    @POST("v1/calendar/join_or_deny_calendar")
     Observable<Void> joinOrDenyCalendar(
         @Query("access_token") String accessToken,
         @Query("calendar_id") String calendarId,
@@ -215,7 +215,7 @@ public interface ICalendarService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param calendarId    必填字段  日程id
      **/
-    @POST("/v1/calendar/exit_calendar")
+    @POST("v1/calendar/exit_calendar")
     Observable<Void> exitCalendar(
         @Query("access_token") String accessToken,
         @Query("calendar_id") String calendarId);
@@ -228,7 +228,7 @@ public interface ICalendarService {
      * @param calendarAccountId      邀请人id
      * @param calendarAccountEmail      邀请人邮箱
      **/
-    @POST("/v1/calendar/reinvite_calendar_member")
+    @POST("v1/calendar/reinvite_calendar_member")
     Observable<Void> reinviteCalendarMember(
         @Query("access_token") String accessToken,
         @Query("calendar_id") String calendarId,
@@ -241,7 +241,7 @@ public interface ICalendarService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param calendarId    必填字段  日程id
      **/
-    @POST("/v1/calendar/delete_calendar")
+    @POST("v1/calendar/delete_calendar")
     Observable<Void> deleteCalendar(
         @Query("access_token") String accessToken,
         @Query("calendar_id") String calendarId);
@@ -256,7 +256,7 @@ public interface ICalendarService {
      * @param categoryId       用户日程分类id
      * @param chooseType    必填字段  操作类型 删除=0/添加=1/修改=2
      **/
-    @POST("/v1/calendar/user_category_operate")
+    @POST("v1/calendar/user_category_operate")
     Observable<Void> userCategoryOperate(
         @Query("access_token") String accessToken,
         @Query("calendar_id") String calendarId,
@@ -273,7 +273,7 @@ public interface ICalendarService {
      * @param calendarRemindTime      提醒时间
      * @param calendarRemindType      提醒类型
      **/
-    @POST("/v1/calendar/update_calendar_remind")
+    @POST("v1/calendar/update_calendar_remind")
     Observable<Void> updateCalendarRemind(
         @Query("access_token") String accessToken,
         @Query("calendar_id") String calendarId,

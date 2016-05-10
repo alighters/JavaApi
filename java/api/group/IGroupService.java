@@ -12,7 +12,7 @@ public interface IGroupService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param groupId    必填字段  群组编号
      **/
-    @GET("/v1/group/get_group_detail")
+    @GET("v1/group/get_group_detail")
     Observable<Void> getGroupDetail(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId);
@@ -22,39 +22,45 @@ public interface IGroupService {
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param accountId      指定用户编号，获取此用户创建的群组，默认为当前授权用户
+     * @param projectId      哪个网络（默认个人自由网络）
      **/
-    @GET("/v1/group/get_my_created_groups")
+    @GET("v1/group/get_my_created_groups")
     Observable<Void> getMyCreatedGroups(
         @Query("access_token") String accessToken,
-        @Query("account_id") String accountId);
+        @Query("account_id") String accountId,
+        @Query("project_id") String projectId);
 
     /**
      * 获取公司群组
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param projectId    必填字段  要获取的网络ID
-     * @param sortType      按群组名称排序 默认0：倒序；1：升序
-     * @param pageindex      指定当前的页码(不指定页码返回所有)
-     * @param pagesize      指定要返回的记录条数(默认值20，最大值100)
+     * @param sortGroup      默认按群组名称排序（2：按动态数量最常协作群组）
+     * @param sortType      升序还是降序
+     * @param pageIndex      指定当前的页码(不指定页码返回所有)
+     * @param pageSize      指定要返回的记录条数(默认值20，最大值100)
      **/
-    @GET("/v1/group/get_project_groups")
+    @GET("v1/group/get_project_groups")
     Observable<Void> getProjectGroups(
         @Query("access_token") String accessToken,
         @Query("project_id") String projectId,
-        @Query("sort_type") int sortType,
-        @Query("pageindex") int pageindex,
-        @Query("pagesize") int pagesize);
+        @Query("sort_group") int sortGroup,
+        @Query("sort_type") Boolean sortType,
+        @Query("pageindex") int pageIndex,
+        @Query("pagesize") int pageSize);
 
     /**
      * 获取用户加入的群组
      *
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param accountId      指定用户编号，获取此用户创建的群组，默认为当前授权用户
+     * @param projectId      哪个网络（默认个人自由网络）
      **/
-    @GET("/v1/group/get_account_joined_groups")
+    @GET("v1/group/get_account_joined_groups")
     Observable<Void> getAccountJoinedGroups(
         @Query("access_token") String accessToken,
-        @Query("account_id") String accountId);
+        @Query("account_id") String accountId,
+        @Query("project_id") String projectId);
 
     /**
      * 获取群组成员信息
@@ -62,7 +68,7 @@ public interface IGroupService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param groupId    必填字段  群组编号
      **/
-    @GET("/v1/group/get_group_members")
+    @GET("v1/group/get_group_members")
     Observable<Void> getGroupMembers(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId);
@@ -73,7 +79,7 @@ public interface IGroupService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param groupId    必填字段  群组编号
      **/
-    @GET("/v1/group/get_unaudited_members")
+    @GET("v1/group/get_unaudited_members")
     Observable<Void> getUnauditedMembers(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId);
@@ -84,22 +90,37 @@ public interface IGroupService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param groupName    必填字段  要创建的群组的名称
      * @param about      群组的简介
-     * @param isHidden      是否列入公司群组列表(*只有私有群组才有此功能)，0不隐藏，1隐藏
-     * @param isApproval      用户加入是否审批(0：否，1：是)
-     * @param isPost      是否作为动态分享群组(0：否，1：是)
-     * @param deptId      部门ID(如果设置官方群组需传关联的部门ID)
+     * @param projectId      群组网络
+     * @param avatar      群组头像
      * @param accountIds      群组成员
      **/
-    @POST("/v1/group/create_group")
+    @POST("v1/group/create_group")
     Observable<Void> createGroup(
         @Query("access_token") String accessToken,
         @Query("group_name") String groupName,
         @Query("about") String about,
-        @Query("is_hidden") Boolean isHidden,
-        @Query("is_approval") String isApproval,
-        @Query("is_post") String isPost,
-        @Query("dept_id") int deptId,
+        @Query("project_id") String projectId,
+        @Query("avatar") String avatar,
         @Query("account_ids") String accountIds);
+
+    /**
+     * 编辑群组
+     *
+     * @param accessToken    必填字段  当前登录用户访问令牌
+     * @param groupId    必填字段  群组id
+     * @param groupName    必填字段  要创建的群组的名称
+     * @param about      群组的简介
+     * @param isApproval      群组网络
+     * @param avatar      群组头像
+     **/
+    @POST("v1/group/edit_group")
+    Observable<Void> editGroup(
+        @Query("access_token") String accessToken,
+        @Query("group_id") String groupId,
+        @Query("group_name") String groupName,
+        @Query("about") String about,
+        @Query("is_approval") String isApproval,
+        @Query("avatar") String avatar);
 
     /**
      * 群组操作退出
@@ -107,7 +128,7 @@ public interface IGroupService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param groupId    必填字段  群组编号
      **/
-    @POST("/v1/group/exit_group")
+    @POST("v1/group/exit_group")
     Observable<Void> exitGroup(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId);
@@ -119,7 +140,7 @@ public interface IGroupService {
      * @param groupId    必填字段  群组编号
      * @param accountId    必填字段  用户编号
      **/
-    @POST("/v1/group/add_group_admin")
+    @POST("v1/group/add_group_admin")
     Observable<Void> addGroupAdmin(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId,
@@ -133,7 +154,7 @@ public interface IGroupService {
      * @param accountId      用户编号
      * @param chooseType    必填字段  操作类型 1：移除用户 2：移除管理员(仅限群组管理员)
      **/
-    @POST("/v1/group/remove_group_user_or_admin")
+    @POST("v1/group/remove_group_user_or_admin")
     Observable<Void> removeGroupUserOrAdmin(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId,
@@ -148,7 +169,7 @@ public interface IGroupService {
      * @param emails    必填字段  重新邀请用户email 多个邮箱用逗号隔开
      * @param inviteType      邀请类型 0：内部用户或来宾；1：外联群组用户
      **/
-    @POST("/v1/group/again_invite_group_user")
+    @POST("v1/group/again_invite_group_user")
     Observable<Void> againInviteGroupUser(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId,
@@ -164,7 +185,7 @@ public interface IGroupService {
      * @param egroupEmails      邀请外联用户email 多个邮箱用逗号隔开
      * @param egroupMobilephones      邀请外联用户手机号码 多个手机号码用逗号隔开
      **/
-    @POST("/v1/group/invite_user_join_group")
+    @POST("v1/group/invite_user_join_group")
     Observable<Void> inviteUserJoinGroup(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId,
@@ -180,7 +201,7 @@ public interface IGroupService {
      * @param accountIds    必填字段  待审批用户编号 多个用,号隔开
      * @param chooseType    必填字段  同意1/拒绝0
      **/
-    @POST("/v1/group/pass_or_refuse_user_join_group")
+    @POST("v1/group/pass_or_refuse_user_join_group")
     Observable<Void> passOrRefuseUserJoinGroup(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId,
@@ -193,7 +214,7 @@ public interface IGroupService {
      * @param accessToken    必填字段  当前登录用户访问令牌
      * @param groupId    必填字段  群组编号
      **/
-    @POST("/v1/group/chat_to_post_group")
+    @POST("v1/group/chat_to_post_group")
     Observable<Void> chatToPostGroup(
         @Query("access_token") String accessToken,
         @Query("group_id") String groupId);
