@@ -71,6 +71,8 @@ class JavaClass
 
   def get_import_array
     imports = []
+    imports.push "import retrofit2.http.Field;"
+    imports.push "import retrofit2.http.FormUrlEncoded;"
     imports.push "import retrofit2.http.GET;"
     imports.push "import retrofit2.http.POST;"
     imports.push "import retrofit2.http.Query;"

@@ -12,6 +12,10 @@ class JavaMethodParam
     "@Query(\"#{key}\") #{get_type} #{get_key}"
   end
 
+  def to_field_java
+    "@Field(\"#{key}\") #{get_type} #{get_key}"
+  end
+
   def get_type
     type = "int"
     case @type

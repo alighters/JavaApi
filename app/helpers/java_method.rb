@@ -38,14 +38,25 @@ class JavaMethod
     end
     values.push " **/"
 
-    values.push "@#{@requestMode.to_s.upcase}(\"#{get_url}\")"
+    if is_post_method?
+      values.push "@FormUrlEncoded"
+    end
+    values.push "@#{get_http_method.to_s}(\"#{get_url}\")"
 
     values.push "Observable<Void> #{get_method_name}("
     @params.each_with_index.map{|method_param, i|
       if i < @params.size - 1
-        values.push "    #{method_param.to_java},"
+        if is_post_method?
+          values.push "    #{method_param.to_field_java},"
+        else
+          values.push "    #{method_param.to_java},"
+        end
       else
-        values.push "    #{method_param.to_java});"
+        if is_post_method?
+          values.push "    #{method_param.to_field_java});"
+        else
+          values.push "    #{method_param.to_java});"
+        end
       end
     }
     values
@@ -59,6 +70,18 @@ class JavaMethod
     str
   end
 
+  def get_http_method
+    node = @requestMode.to_s.upcase
+    node
+  end
+
+  def is_post_method?
+    result = false
+    if get_http_method == "POST"
+      result = true
+    end
+    result
+  end
 
   def get_method_name
     method_name = nil
